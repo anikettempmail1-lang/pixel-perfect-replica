@@ -1,23 +1,34 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { SiteNav } from "@/components/marketing/site-nav";
+import { FinalCta, Features, Hero, HowItWorks, ProblemSolution, SiteFooter, WhyTalentIQ } from "@/components/marketing/landing-sections";
 
-// The home route ships no og:image, so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
 export const Route = createFileRoute("/")({
-  component: Index,
+  head: () => ({
+    meta: [
+      { title: "TalentIQ — Hire smarter. Discover the right talent." },
+      { name: "description", content: "Parse resumes in bulk, extract job requirements, and evaluate candidates with explainable, evidence-backed insights." },
+      { property: "og:title", content: "TalentIQ — Hire smarter. Discover the right talent." },
+      { property: "og:description", content: "Parse resumes in bulk, extract job requirements, and evaluate candidates with explainable insights." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
+  component: LandingPage,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
-function Index() {
+function LandingPage() {
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
+    <div className="min-h-screen bg-background">
+      <SiteNav />
+      <main>
+        <Hero />
+        <ProblemSolution />
+        <Features />
+        <HowItWorks />
+        <WhyTalentIQ />
+        <FinalCta />
+      </main>
+      <SiteFooter />
     </div>
   );
 }
