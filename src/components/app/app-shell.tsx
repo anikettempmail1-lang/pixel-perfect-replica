@@ -152,25 +152,30 @@ function AppSidebar() {
   );
 }
 
+type Crumb = {
+  label: string;
+  href?: { to: "/candidates" } | { to: "/jobs" } | { to: "/jobs/$id"; params: { id: string } };
+};
+
 function useBreadcrumbs() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const candidates = useTalentStore((s) => s.candidates);
   const jobs = useTalentStore((s) => s.jobs);
   const parts = pathname.split("/").filter(Boolean);
-  const crumbs: Array<{ label: string; href?: string }> = [];
+  const crumbs: Crumb[] = [];
   const root = parts[0];
   if (root === "dashboard") crumbs.push({ label: "Overview" });
   if (root === "settings") crumbs.push({ label: "Settings" });
   if (root === "candidates") {
-    crumbs.push({ label: "Candidates", href: parts[1] ? "/candidates" : undefined });
+    crumbs.push({ label: "Candidates", href: parts[1] ? { to: "/candidates" } : undefined });
     if (parts[1]) crumbs.push({ label: candidates.find((c) => c.id === parts[1])?.name ?? "Candidate" });
   }
   if (root === "jobs") {
-    crumbs.push({ label: "Jobs", href: parts[1] ? "/jobs" : undefined });
+    crumbs.push({ label: "Jobs", href: parts[1] ? { to: "/jobs" } : undefined });
     if (parts[1] === "new") crumbs.push({ label: "New job" });
     else if (parts[1]) {
       const title = jobs.find((j) => j.id === parts[1])?.title ?? "Job";
-      crumbs.push({ label: title, href: parts[2] ? `/jobs/${parts[1]}` : undefined });
+      crumbs.push({ label: title, href: parts[2] ? { to: "/jobs/$id", params: { id: parts[1] } } : undefined });
       if (parts[2] === "matches") crumbs.push({ label: "Matches" });
       if (parts[2] === "edit") crumbs.push({ label: "Edit" });
     }
@@ -180,7 +185,6 @@ function useBreadcrumbs() {
 
 function AppHeader() {
   const crumbs = useBreadcrumbs();
-  const navigate = useNavigate();
   const { openUpload } = useUploadDialog();
 
   return (
@@ -192,16 +196,9 @@ function AppHeader() {
           <span key={`${c.label}-${i}`} className="flex min-w-0 items-center gap-1">
             {i > 0 && <ChevronRight className="size-3.5 shrink-0 text-muted-foreground" />}
             {c.href ? (
-              <a
-                href={c.href}
-                onClick={(e) => {
-                  e.preventDefault();
-                  navigate({ to: c.href! });
-                }}
-                className="truncate text-muted-foreground hover:text-foreground"
-              >
+              <Link {...c.href} className="truncate text-muted-foreground hover:text-foreground">
                 {c.label}
-              </a>
+              </Link>
             ) : (
               <span className="truncate font-medium">{c.label}</span>
             )}
