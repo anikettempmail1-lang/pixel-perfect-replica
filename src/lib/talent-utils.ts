@@ -52,8 +52,8 @@ export function totalExperienceMonths(
   experience: Array<Pick<Experience, "startDate" | "endDate">>,
   now = MOCK_NOW,
 ): number {
-  const ranges = experience
-    .map((e) => [
+  const ranges: Array<[number, number]> = experience
+    .map((e): [number, number] => [
       monthIndex(new Date(e.startDate)),
       monthIndex(e.endDate ? new Date(e.endDate) : now),
     ])

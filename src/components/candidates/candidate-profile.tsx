@@ -226,7 +226,7 @@ export function CandidateProfile({ candidateId }: { candidateId: string }) {
   );
 }
 
-function ContactItem({ icon: Icon, value, href }: { icon: typeof Mail; value: string | null; href?: string }) {
+function ContactItem({ icon: Icon, value, href }: { icon: typeof Mail; value: string | null; href?: string | undefined }) {
   if (!value) return null;
   const content = (
     <span className="inline-flex min-w-0 items-center gap-1.5"><Icon className="size-3.5 shrink-0" /><span className="truncate">{value}</span></span>
