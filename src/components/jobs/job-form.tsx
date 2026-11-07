@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { FormProvider, useFieldArray, useForm } from "react-hook-form";
+import { FormProvider, useFieldArray, useForm, useFormContext } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link, useNavigate } from "@tanstack/react-router";
 import {
@@ -96,7 +96,9 @@ export function JobForm({ job }: { job?: Job | undefined }) {
         }
         setSaving(status);
         await new Promise((r) => setTimeout(r, 500));
-        const next = formToJob(values, editing ? (status === "ACTIVE" ? "ACTIVE" : job!.status === "ACTIVE" && status === "DRAFT" ? "DRAFT" : status) : status, job);
+        // In edit mode "Save changes" keeps the job's current status.
+        const nextStatus: JobStatus = editing && status === "DRAFT" ? job!.status : status;
+        const next = formToJob(values, nextStatus, job);
         talentActions.saveJob(next);
         setSaving(null);
         toast.success(editing ? "Job updated" : status === "ACTIVE" ? "Job activated" : "Draft saved", { description: next.title });
@@ -110,7 +112,7 @@ export function JobForm({ job }: { job?: Job | undefined }) {
 
   return (
     <FormProvider {...form}>
-      <form onSubmit={(e) => e.preventDefault()} className="space-y-6 pb-24">
+      <form onSubmit={(e) => e.preventDefault()} className="space-y-6">
         <Button variant="ghost" size="sm" className="-ml-2 text-muted-foreground" asChild>
           {editing ? (
             <Link to="/jobs/$id" params={{ id: job!.id }}><ArrowLeft /> Back to job</Link>
@@ -217,8 +219,8 @@ export function JobForm({ job }: { job?: Job | undefined }) {
         )}
 
         {/* sticky action bar */}
-        <div className="fixed inset-x-0 bottom-0 z-20 border-t bg-background/90 backdrop-blur-md md:left-(--sidebar-width) md:peer-data-[state=collapsed]:left-(--sidebar-width-icon)">
-          <div className="mx-auto flex max-w-7xl items-center justify-end gap-2 px-4 py-3 sm:px-6 lg:px-8">
+        <div className="sticky bottom-0 z-20 -mx-4 -mb-6 border-t bg-background/90 backdrop-blur-md sm:-mx-6 lg:-mx-8 lg:-mb-8">
+          <div className="flex flex-wrap items-center justify-end gap-2 px-4 py-3 sm:px-6 lg:px-8">
             <p className="mr-auto hidden text-xs text-muted-foreground sm:block">
               {phase === "review" ? "Draft saves anytime. Activation requires skill groups and responsibilities." : "Extract requirements to continue."}
             </p>
@@ -263,7 +265,7 @@ function Field({
 }
 
 function ResponsibilitiesEditor() {
-  const { control, register, formState } = useForm<JobFormValues>() && useFormCtx();
+  const { control, register, formState } = useFormContext<JobFormValues>();
   const { fields, append, remove } = useFieldArray({ control, name: "jobResponsibility", keyName: "_key" });
   return (
     <div className="space-y-2">
@@ -285,11 +287,6 @@ function ResponsibilitiesEditor() {
       </Button>
     </div>
   );
-}
-
-import { useFormContext } from "react-hook-form";
-function useFormCtx() {
-  return useFormContext<JobFormValues>();
 }
 
 function Stepper({ phase }: { phase: Phase }) {
