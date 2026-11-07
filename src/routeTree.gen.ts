@@ -18,6 +18,7 @@ import { Route as WorkspaceJobsIndexRouteImport } from './routes/_workspace.jobs
 import { Route as WorkspaceJobsNewRouteImport } from './routes/_workspace.jobs.new'
 import { Route as WorkspaceJobsIdIndexRouteImport } from './routes/_workspace.jobs.$id.index'
 import { Route as WorkspaceJobsIdEditRouteImport } from './routes/_workspace.jobs.$id.edit'
+import { Route as WorkspaceJobsIdMatchesRouteImport } from './routes/_workspace.jobs.$id.matches'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -64,6 +65,11 @@ const WorkspaceJobsIdEditRoute = WorkspaceJobsIdEditRouteImport.update({
   path: '/jobs/$id/edit',
   getParentRoute: () => WorkspaceRoute,
 } as any)
+const WorkspaceJobsIdMatchesRoute = WorkspaceJobsIdMatchesRouteImport.update({
+  id: '/jobs/$id/matches',
+  path: '/jobs/$id/matches',
+  getParentRoute: () => WorkspaceRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -73,6 +79,7 @@ export interface FileRoutesByFullPath {
   '/candidates/': typeof WorkspaceCandidatesIndexRoute
   '/jobs/': typeof WorkspaceJobsIndexRoute
   '/jobs/$id/edit': typeof WorkspaceJobsIdEditRoute
+  '/jobs/$id/matches': typeof WorkspaceJobsIdMatchesRoute
   '/jobs/$id/': typeof WorkspaceJobsIdIndexRoute
 }
 export interface FileRoutesByTo {
@@ -83,6 +90,7 @@ export interface FileRoutesByTo {
   '/candidates': typeof WorkspaceCandidatesIndexRoute
   '/jobs': typeof WorkspaceJobsIndexRoute
   '/jobs/$id/edit': typeof WorkspaceJobsIdEditRoute
+  '/jobs/$id/matches': typeof WorkspaceJobsIdMatchesRoute
   '/jobs/$id': typeof WorkspaceJobsIdIndexRoute
 }
 export interface FileRoutesById {
@@ -95,6 +103,7 @@ export interface FileRoutesById {
   '/_workspace/candidates/': typeof WorkspaceCandidatesIndexRoute
   '/_workspace/jobs/': typeof WorkspaceJobsIndexRoute
   '/_workspace/jobs/$id/edit': typeof WorkspaceJobsIdEditRoute
+  '/_workspace/jobs/$id/matches': typeof WorkspaceJobsIdMatchesRoute
   '/_workspace/jobs/$id/': typeof WorkspaceJobsIdIndexRoute
 }
 export interface FileRouteTypes {
@@ -107,6 +116,7 @@ export interface FileRouteTypes {
     | '/candidates/'
     | '/jobs/'
     | '/jobs/$id/edit'
+    | '/jobs/$id/matches'
     | '/jobs/$id/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -117,6 +127,7 @@ export interface FileRouteTypes {
     | '/candidates'
     | '/jobs'
     | '/jobs/$id/edit'
+    | '/jobs/$id/matches'
     | '/jobs/$id'
   id:
     | '__root__'
@@ -128,6 +139,7 @@ export interface FileRouteTypes {
     | '/_workspace/candidates/'
     | '/_workspace/jobs/'
     | '/_workspace/jobs/$id/edit'
+    | '/_workspace/jobs/$id/matches'
     | '/_workspace/jobs/$id/'
   fileRoutesById: FileRoutesById
 }
@@ -202,6 +214,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WorkspaceJobsIdEditRouteImport
       parentRoute: typeof WorkspaceRoute
     }
+    '/_workspace/jobs/$id/matches': {
+      id: '/_workspace/jobs/$id/matches'
+      path: '/jobs/$id/matches'
+      fullPath: '/jobs/$id/matches'
+      preLoaderRoute: typeof WorkspaceJobsIdMatchesRouteImport
+      parentRoute: typeof WorkspaceRoute
+    }
   }
 }
 
@@ -211,6 +230,7 @@ interface WorkspaceRouteChildren {
   WorkspaceCandidatesIndexRoute: typeof WorkspaceCandidatesIndexRoute
   WorkspaceJobsIndexRoute: typeof WorkspaceJobsIndexRoute
   WorkspaceJobsIdEditRoute: typeof WorkspaceJobsIdEditRoute
+  WorkspaceJobsIdMatchesRoute: typeof WorkspaceJobsIdMatchesRoute
   WorkspaceJobsIdIndexRoute: typeof WorkspaceJobsIdIndexRoute
 }
 
@@ -220,6 +240,7 @@ const WorkspaceRouteChildren: WorkspaceRouteChildren = {
   WorkspaceCandidatesIndexRoute: WorkspaceCandidatesIndexRoute,
   WorkspaceJobsIndexRoute: WorkspaceJobsIndexRoute,
   WorkspaceJobsIdEditRoute: WorkspaceJobsIdEditRoute,
+  WorkspaceJobsIdMatchesRoute: WorkspaceJobsIdMatchesRoute,
   WorkspaceJobsIdIndexRoute: WorkspaceJobsIdIndexRoute,
 }
 
