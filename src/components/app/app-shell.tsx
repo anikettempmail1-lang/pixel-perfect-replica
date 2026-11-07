@@ -154,7 +154,7 @@ function AppSidebar() {
 
 type Crumb = {
   label: string;
-  href?: { to: "/candidates" } | { to: "/jobs" } | { to: "/jobs/$id"; params: { id: string } };
+  href?: { to: "/candidates" } | { to: "/jobs" } | { to: "/jobs/$id"; params: { id: string } } | undefined;
 };
 
 function useBreadcrumbs() {
