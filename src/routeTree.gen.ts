@@ -14,6 +14,10 @@ import { Route as WorkspaceRouteImport } from './routes/_workspace'
 import { Route as SignInRouteImport } from './routes/sign-in'
 import { Route as WorkspaceCandidatesIndexRouteImport } from './routes/_workspace.candidates.index'
 import { Route as WorkspaceCandidatesIdRouteImport } from './routes/_workspace.candidates.$id'
+import { Route as WorkspaceJobsIndexRouteImport } from './routes/_workspace.jobs.index'
+import { Route as WorkspaceJobsNewRouteImport } from './routes/_workspace.jobs.new'
+import { Route as WorkspaceJobsIdIndexRouteImport } from './routes/_workspace.jobs.$id.index'
+import { Route as WorkspaceJobsIdEditRouteImport } from './routes/_workspace.jobs.$id.edit'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -40,18 +44,46 @@ const WorkspaceCandidatesIdRoute = WorkspaceCandidatesIdRouteImport.update({
   path: '/candidates/$id',
   getParentRoute: () => WorkspaceRoute,
 } as any)
+const WorkspaceJobsIndexRoute = WorkspaceJobsIndexRouteImport.update({
+  id: '/jobs/',
+  path: '/jobs/',
+  getParentRoute: () => WorkspaceRoute,
+} as any)
+const WorkspaceJobsNewRoute = WorkspaceJobsNewRouteImport.update({
+  id: '/jobs/new',
+  path: '/jobs/new',
+  getParentRoute: () => WorkspaceRoute,
+} as any)
+const WorkspaceJobsIdIndexRoute = WorkspaceJobsIdIndexRouteImport.update({
+  id: '/jobs/$id/',
+  path: '/jobs/$id/',
+  getParentRoute: () => WorkspaceRoute,
+} as any)
+const WorkspaceJobsIdEditRoute = WorkspaceJobsIdEditRouteImport.update({
+  id: '/jobs/$id/edit',
+  path: '/jobs/$id/edit',
+  getParentRoute: () => WorkspaceRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/sign-in': typeof SignInRoute
   '/candidates/$id': typeof WorkspaceCandidatesIdRoute
+  '/jobs/new': typeof WorkspaceJobsNewRoute
   '/candidates/': typeof WorkspaceCandidatesIndexRoute
+  '/jobs/': typeof WorkspaceJobsIndexRoute
+  '/jobs/$id/edit': typeof WorkspaceJobsIdEditRoute
+  '/jobs/$id/': typeof WorkspaceJobsIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/sign-in': typeof SignInRoute
   '/candidates/$id': typeof WorkspaceCandidatesIdRoute
+  '/jobs/new': typeof WorkspaceJobsNewRoute
   '/candidates': typeof WorkspaceCandidatesIndexRoute
+  '/jobs': typeof WorkspaceJobsIndexRoute
+  '/jobs/$id/edit': typeof WorkspaceJobsIdEditRoute
+  '/jobs/$id': typeof WorkspaceJobsIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -59,20 +91,44 @@ export interface FileRoutesById {
   '/_workspace': typeof WorkspaceRouteWithChildren
   '/sign-in': typeof SignInRoute
   '/_workspace/candidates/$id': typeof WorkspaceCandidatesIdRoute
+  '/_workspace/jobs/new': typeof WorkspaceJobsNewRoute
   '/_workspace/candidates/': typeof WorkspaceCandidatesIndexRoute
+  '/_workspace/jobs/': typeof WorkspaceJobsIndexRoute
+  '/_workspace/jobs/$id/edit': typeof WorkspaceJobsIdEditRoute
+  '/_workspace/jobs/$id/': typeof WorkspaceJobsIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/sign-in' | '/candidates/$id' | '/candidates/'
+  fullPaths:
+    | '/'
+    | '/sign-in'
+    | '/candidates/$id'
+    | '/jobs/new'
+    | '/candidates/'
+    | '/jobs/'
+    | '/jobs/$id/edit'
+    | '/jobs/$id/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/sign-in' | '/candidates/$id' | '/candidates'
+  to:
+    | '/'
+    | '/sign-in'
+    | '/candidates/$id'
+    | '/jobs/new'
+    | '/candidates'
+    | '/jobs'
+    | '/jobs/$id/edit'
+    | '/jobs/$id'
   id:
     | '__root__'
     | '/'
     | '/_workspace'
     | '/sign-in'
     | '/_workspace/candidates/$id'
+    | '/_workspace/jobs/new'
     | '/_workspace/candidates/'
+    | '/_workspace/jobs/'
+    | '/_workspace/jobs/$id/edit'
+    | '/_workspace/jobs/$id/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -118,17 +174,53 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WorkspaceCandidatesIdRouteImport
       parentRoute: typeof WorkspaceRoute
     }
+    '/_workspace/jobs/': {
+      id: '/_workspace/jobs/'
+      path: '/jobs'
+      fullPath: '/jobs/'
+      preLoaderRoute: typeof WorkspaceJobsIndexRouteImport
+      parentRoute: typeof WorkspaceRoute
+    }
+    '/_workspace/jobs/new': {
+      id: '/_workspace/jobs/new'
+      path: '/jobs/new'
+      fullPath: '/jobs/new'
+      preLoaderRoute: typeof WorkspaceJobsNewRouteImport
+      parentRoute: typeof WorkspaceRoute
+    }
+    '/_workspace/jobs/$id/': {
+      id: '/_workspace/jobs/$id/'
+      path: '/jobs/$id'
+      fullPath: '/jobs/$id/'
+      preLoaderRoute: typeof WorkspaceJobsIdIndexRouteImport
+      parentRoute: typeof WorkspaceRoute
+    }
+    '/_workspace/jobs/$id/edit': {
+      id: '/_workspace/jobs/$id/edit'
+      path: '/jobs/$id/edit'
+      fullPath: '/jobs/$id/edit'
+      preLoaderRoute: typeof WorkspaceJobsIdEditRouteImport
+      parentRoute: typeof WorkspaceRoute
+    }
   }
 }
 
 interface WorkspaceRouteChildren {
   WorkspaceCandidatesIdRoute: typeof WorkspaceCandidatesIdRoute
+  WorkspaceJobsNewRoute: typeof WorkspaceJobsNewRoute
   WorkspaceCandidatesIndexRoute: typeof WorkspaceCandidatesIndexRoute
+  WorkspaceJobsIndexRoute: typeof WorkspaceJobsIndexRoute
+  WorkspaceJobsIdEditRoute: typeof WorkspaceJobsIdEditRoute
+  WorkspaceJobsIdIndexRoute: typeof WorkspaceJobsIdIndexRoute
 }
 
 const WorkspaceRouteChildren: WorkspaceRouteChildren = {
   WorkspaceCandidatesIdRoute: WorkspaceCandidatesIdRoute,
+  WorkspaceJobsNewRoute: WorkspaceJobsNewRoute,
   WorkspaceCandidatesIndexRoute: WorkspaceCandidatesIndexRoute,
+  WorkspaceJobsIndexRoute: WorkspaceJobsIndexRoute,
+  WorkspaceJobsIdEditRoute: WorkspaceJobsIdEditRoute,
+  WorkspaceJobsIdIndexRoute: WorkspaceJobsIdIndexRoute,
 }
 
 const WorkspaceRouteWithChildren = WorkspaceRoute._addFileChildren(
