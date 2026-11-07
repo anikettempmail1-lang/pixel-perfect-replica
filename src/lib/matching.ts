@@ -87,7 +87,7 @@ function titleTokens(title: string) {
     .filter((t) => t.length > 1 && !STOPWORDS.has(t));
 }
 
-function scoreLocation(job: Job, candidate: Candidate): { score: number; flag?: string } {
+function scoreLocation(job: Job, candidate: Candidate): { score: number; flag?: string | undefined } {
   if (!job.location || /remote/i.test(job.location)) return { score: 100 };
   if (!candidate.location) return { score: 50, flag: "Candidate location not found in resume." };
   if (/remote/i.test(candidate.location)) return { score: 60, flag: "Candidate lists Remote — confirm relocation or on-site availability." };
@@ -98,7 +98,7 @@ function scoreLocation(job: Job, candidate: Candidate): { score: number; flag?: 
   return { score: 40, flag: "Different location — relocation may need discussion." };
 }
 
-function assessEducation(job: Job, candidate: Candidate): { score: number; assessment: EducationAssessment; flag?: string } {
+function assessEducation(job: Job, candidate: Candidate): { score: number; assessment: EducationAssessment; flag?: string | undefined } {
   const req = job.educationRequirement;
   if (!req) {
     return {
