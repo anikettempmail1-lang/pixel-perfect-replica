@@ -28,3 +28,11 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+## Project rules (TalentIQ)
+
+- Domain types in `src/lib/types.ts` mirror the backend Prisma schema exactly; matching types (`MatchResult` etc.) are frontend-only and never added to Candidate/Job. Why: the UI is meant to be ported onto the user's existing backend.
+- All data flows through `src/lib/store.ts` (`useTalentStore` + `talentActions`) seeded from `src/lib/mock-data.ts`; no backend, APIs, or Lovable Cloud. Why: frontend-only build to be wired to the user's own Next.js backend later.
+- Upload, job-extraction, and evaluation logic live only in `src/lib/upload-service.ts`, `src/lib/job-extraction.ts`, and `src/lib/matching.ts` behind swappable functions/interfaces. Why: so real Supabase Storage / API calls replace one file each.
+- Screens are framework-agnostic components in `src/components/<area>/`; route files under `src/routes/` stay thin wrappers. Why: easy transfer into a Next.js App Router project.
+- Skill groups (ANY/ALL/PREFERRED → skills) and accepted degrees stay nested objects end to end; never flatten. Why: user requirement mirrored in schema.

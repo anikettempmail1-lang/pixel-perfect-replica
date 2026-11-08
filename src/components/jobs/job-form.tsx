@@ -187,16 +187,13 @@ export function JobForm({ job }: { job?: Job | undefined }) {
               <p className="text-primary-soft-foreground">Review everything below. Extracted requirements are suggestions — edit them to reflect what this role really needs.</p>
             </div>
 
-            <SectionCard title="Experience & location">
-              <div className="grid gap-4 sm:grid-cols-3">
+            <SectionCard title="Experience" description="Location is edited in Job information above.">
+              <div className="grid gap-4 sm:grid-cols-2">
                 <Field label="Minimum years" htmlFor="minExp" error={errors.minExperience?.message}>
                   <Input id="minExp" type="number" min={0} step={1} placeholder="Any" {...form.register("minExperience", { setValueAs: (v) => (v === "" || v == null ? null : Number(v)) })} />
                 </Field>
                 <Field label="Maximum years" htmlFor="maxExp" error={errors.maxExperience?.message}>
                   <Input id="maxExp" type="number" min={0} step={1} placeholder="Any" {...form.register("maxExperience", { setValueAs: (v) => (v === "" || v == null ? null : Number(v)) })} />
-                </Field>
-                <Field label="Location" htmlFor="location2">
-                  <Input id="location2" placeholder="Remote" {...form.register("location")} />
                 </Field>
               </div>
             </SectionCard>
