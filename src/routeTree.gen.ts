@@ -12,6 +12,8 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as WorkspaceRouteImport } from './routes/_workspace'
 import { Route as SignInRouteImport } from './routes/sign-in'
+import { Route as WorkspaceDashboardRouteImport } from './routes/_workspace.dashboard'
+import { Route as WorkspaceSettingsRouteImport } from './routes/_workspace.settings'
 import { Route as WorkspaceCandidatesIndexRouteImport } from './routes/_workspace.candidates.index'
 import { Route as WorkspaceCandidatesIdRouteImport } from './routes/_workspace.candidates.$id'
 import { Route as WorkspaceJobsIndexRouteImport } from './routes/_workspace.jobs.index'
@@ -33,6 +35,16 @@ const SignInRoute = SignInRouteImport.update({
   id: '/sign-in',
   path: '/sign-in',
   getParentRoute: () => rootRouteImport,
+} as any)
+const WorkspaceDashboardRoute = WorkspaceDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => WorkspaceRoute,
+} as any)
+const WorkspaceSettingsRoute = WorkspaceSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => WorkspaceRoute,
 } as any)
 const WorkspaceCandidatesIndexRoute =
   WorkspaceCandidatesIndexRouteImport.update({
@@ -74,6 +86,8 @@ const WorkspaceJobsIdMatchesRoute = WorkspaceJobsIdMatchesRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/sign-in': typeof SignInRoute
+  '/dashboard': typeof WorkspaceDashboardRoute
+  '/settings': typeof WorkspaceSettingsRoute
   '/candidates/$id': typeof WorkspaceCandidatesIdRoute
   '/jobs/new': typeof WorkspaceJobsNewRoute
   '/candidates/': typeof WorkspaceCandidatesIndexRoute
@@ -85,6 +99,8 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/sign-in': typeof SignInRoute
+  '/dashboard': typeof WorkspaceDashboardRoute
+  '/settings': typeof WorkspaceSettingsRoute
   '/candidates/$id': typeof WorkspaceCandidatesIdRoute
   '/jobs/new': typeof WorkspaceJobsNewRoute
   '/candidates': typeof WorkspaceCandidatesIndexRoute
@@ -98,6 +114,8 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_workspace': typeof WorkspaceRouteWithChildren
   '/sign-in': typeof SignInRoute
+  '/_workspace/dashboard': typeof WorkspaceDashboardRoute
+  '/_workspace/settings': typeof WorkspaceSettingsRoute
   '/_workspace/candidates/$id': typeof WorkspaceCandidatesIdRoute
   '/_workspace/jobs/new': typeof WorkspaceJobsNewRoute
   '/_workspace/candidates/': typeof WorkspaceCandidatesIndexRoute
@@ -111,6 +129,8 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/sign-in'
+    | '/dashboard'
+    | '/settings'
     | '/candidates/$id'
     | '/jobs/new'
     | '/candidates/'
@@ -122,6 +142,8 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/sign-in'
+    | '/dashboard'
+    | '/settings'
     | '/candidates/$id'
     | '/jobs/new'
     | '/candidates'
@@ -134,6 +156,8 @@ export interface FileRouteTypes {
     | '/'
     | '/_workspace'
     | '/sign-in'
+    | '/_workspace/dashboard'
+    | '/_workspace/settings'
     | '/_workspace/candidates/$id'
     | '/_workspace/jobs/new'
     | '/_workspace/candidates/'
@@ -171,6 +195,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/sign-in'
       preLoaderRoute: typeof SignInRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_workspace/dashboard': {
+      id: '/_workspace/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof WorkspaceDashboardRouteImport
+      parentRoute: typeof WorkspaceRoute
+    }
+    '/_workspace/settings': {
+      id: '/_workspace/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof WorkspaceSettingsRouteImport
+      parentRoute: typeof WorkspaceRoute
     }
     '/_workspace/candidates/': {
       id: '/_workspace/candidates/'
@@ -225,6 +263,8 @@ declare module '@tanstack/react-router' {
 }
 
 interface WorkspaceRouteChildren {
+  WorkspaceDashboardRoute: typeof WorkspaceDashboardRoute
+  WorkspaceSettingsRoute: typeof WorkspaceSettingsRoute
   WorkspaceCandidatesIdRoute: typeof WorkspaceCandidatesIdRoute
   WorkspaceJobsNewRoute: typeof WorkspaceJobsNewRoute
   WorkspaceCandidatesIndexRoute: typeof WorkspaceCandidatesIndexRoute
@@ -235,6 +275,8 @@ interface WorkspaceRouteChildren {
 }
 
 const WorkspaceRouteChildren: WorkspaceRouteChildren = {
+  WorkspaceDashboardRoute: WorkspaceDashboardRoute,
+  WorkspaceSettingsRoute: WorkspaceSettingsRoute,
   WorkspaceCandidatesIdRoute: WorkspaceCandidatesIdRoute,
   WorkspaceJobsNewRoute: WorkspaceJobsNewRoute,
   WorkspaceCandidatesIndexRoute: WorkspaceCandidatesIndexRoute,
